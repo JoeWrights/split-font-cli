@@ -12,12 +12,12 @@
 
 姊妹项目 `fonts/` 已经跑通了「中日文可变字体（VF）按 Unicode 区段切片 → woff2 → CDN 分发」的完整链路（详见 [`fonts/ARCHITECTURE.md`](../fonts/ARCHITECTURE.md)），但当前实现存在两处明显短板：
 
-| 痛点 | 表现 |
-| --- | --- |
+| 痛点           | 表现                                                                                                               |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ |
 | **写死的常量** | `src/split.mjs` 顶部 `const lang = "cn"; const fontName = "..."` 需要手工切换；多语言/多字体批量切片需要反复改文件 |
-| **零类型约束** | 纯 `.mjs` 实现，配置项无补全、无类型校验，新接入业务方需要逐行读源码理解参数 |
-| **不可复用** | 脚本绑定在仓库目录里，其他项目要复用需要把整段代码复制粘贴过去 |
-| **能力分散** | `range.mjs`（生成切片规则）与 `split.mjs`（执行切片）之间靠 `mv` 接力，工作流割裂 |
+| **零类型约束** | 纯 `.mjs` 实现，配置项无补全、无类型校验，新接入业务方需要逐行读源码理解参数                                       |
+| **不可复用**   | 脚本绑定在仓库目录里，其他项目要复用需要把整段代码复制粘贴过去                                                     |
+| **能力分散**   | `range.mjs`（生成切片规则）与 `split.mjs`（执行切片）之间靠 `mv` 接力，工作流割裂                                  |
 
 ### 1.2 目标
 
@@ -78,11 +78,11 @@ split-font range \
   [--pretty]
 ```
 
-| 参数 | 类型 | 默认 | 说明 |
-| --- | --- | --- | --- |
-| `-i, --input` | string | **必填** | Google Fonts 提供的 `@font-face` CSS 文件路径 |
-| `-o, --output` | string | 与 input 同名 `.json` | 切片规则输出路径 |
-| `--pretty` | boolean | `true` | 是否格式化 JSON（缩进 2 空格） |
+| 参数           | 类型    | 默认                  | 说明                                          |
+| -------------- | ------- | --------------------- | --------------------------------------------- |
+| `-i, --input`  | string  | **必填**              | Google Fonts 提供的 `@font-face` CSS 文件路径 |
+| `-o, --output` | string  | 与 input 同名 `.json` | 切片规则输出路径                              |
+| `--pretty`     | boolean | `true`                | 是否格式化 JSON（缩进 2 空格）                |
 
 #### 2.2.2 `split-font split`
 
@@ -98,18 +98,18 @@ split-font split \
   [--reporter false]
 ```
 
-| 参数 | 类型 | 默认 | 说明 |
-| --- | --- | --- | --- |
-| `-f, --font` | string | **必填** | 源 TTF 字体文件路径 |
-| `-r, --ranges` | string | **必填** | `range` 命令产出的切片规则 JSON |
-| `-o, --out` | string | `./output` | 产物输出目录（最终落到 `<out>/<name>/`） |
-| `-n, --name` | string | 由 font 文件名推导 | 输出文件名与 `font-family` |
-| `--target` | enum | `woff2` | 产物格式：`woff2` \| `woff` \| `ttf` |
-| `--hash <len>` | number | `6` | 文件名中的内容哈希长度，0 表示关闭 |
-| `--font-feature` | boolean | `false` | 是否保留 OpenType features |
-| `--subset-remain-chars` | boolean | `false` | 是否为未覆盖字符生成兜底子集 |
-| `--reporter` | boolean | `false` | 是否生成可视化体积报表 |
-| `--test-html` | boolean | `false` | 是否产出 `test.html` 验证页 |
+| 参数                    | 类型    | 默认               | 说明                                     |
+| ----------------------- | ------- | ------------------ | ---------------------------------------- |
+| `-f, --font`            | string  | **必填**           | 源 TTF 字体文件路径                      |
+| `-r, --ranges`          | string  | **必填**           | `range` 命令产出的切片规则 JSON          |
+| `-o, --out`             | string  | `./output`         | 产物输出目录（最终落到 `<out>/<name>/`） |
+| `-n, --name`            | string  | 由 font 文件名推导 | 输出文件名与 `font-family`               |
+| `--target`              | enum    | `woff2`            | 产物格式：`woff2` \| `woff` \| `ttf`     |
+| `--hash <len>`          | number  | `6`                | 文件名中的内容哈希长度，0 表示关闭       |
+| `--font-feature`        | boolean | `false`            | 是否保留 OpenType features               |
+| `--subset-remain-chars` | boolean | `false`            | 是否为未覆盖字符生成兜底子集             |
+| `--reporter`            | boolean | `false`            | 是否生成可视化体积报表                   |
+| `--test-html`           | boolean | `false`            | 是否产出 `test.html` 验证页              |
 
 #### 2.2.3 `split-font run`
 
@@ -166,11 +166,7 @@ export default defineConfig({
 ### 2.4 库（编程式）API
 
 ```typescript
-import {
-    splitFont,
-    parseUnicodeRangeCss,
-    defineConfig,
-} from "split-font-cli";
+import { splitFont, parseUnicodeRangeCss, defineConfig } from "split-font-cli";
 
 await splitFont({
     font: "./SourceHanSansCN-VF.ttf",
@@ -188,30 +184,30 @@ const rangesMap = await parseUnicodeRangeCss("./google-cn.css");
 
 ## 三、技术栈
 
-| 维度 | 选型 | 理由 |
-| --- | --- | --- |
-| 语言 | TypeScript 5.4 + | 类型安全，团队基建标配 |
-| 运行时 | Node.js 18.x（LTS） | 用户要求；同时兼容 20.x / 22.x |
-| 模块格式 | ESM（`"type": "module"`） | `cn-font-split` 仅提供 ESM；新项目首选 ESM |
-| 构建工具 | `tsup`（基于 esbuild） | 一条命令同时产 ESM + `.d.ts`，比裸 `tsc` 简单 |
-| CLI 框架 | `commander@12` | API 稳定，子命令/帮助文本/类型化选项支持完善，零运行时依赖 |
-| 配置加载 | `tsx`（仅 dev）+ `jiti`（runtime） | `jiti` 让 `.ts` 配置在 Node 18 下也能即时执行 |
-| 日志 | `picocolors` + 内置 logger | 极小体积，无样式逃生序列时自动降级 |
-| 测试 | `vitest`（可选） | 与 vite/esbuild 生态一致，本项目可后续增量补充 |
-| Lint | `eslint` + `@typescript-eslint` | 团队默认 |
-| 私有源 | `.npmrc` 走 `https://ops-nexus.hypergryph.net/...` | 与 `fonts/` 项目一致，便于内部分发 |
+| 维度     | 选型                               | 理由                                                       |
+| -------- | ---------------------------------- | ---------------------------------------------------------- |
+| 语言     | TypeScript 5.4 +                   | 类型安全，团队基建标配                                     |
+| 运行时   | Node.js 18.x（LTS）                | 用户要求；同时兼容 20.x / 22.x                             |
+| 模块格式 | ESM（`"type": "module"`）          | `cn-font-split` 仅提供 ESM；新项目首选 ESM                 |
+| 构建工具 | `tsup`（基于 esbuild）             | 一条命令同时产 ESM + `.d.ts`，比裸 `tsc` 简单              |
+| CLI 框架 | `commander@12`                     | API 稳定，子命令/帮助文本/类型化选项支持完善，零运行时依赖 |
+| 配置加载 | `tsx`（仅 dev）+ `jiti`（runtime） | `jiti` 让 `.ts` 配置在 Node 18 下也能即时执行              |
+| 日志     | `picocolors` + 内置 logger         | 极小体积，无样式逃生序列时自动降级                         |
+| 测试     | `vitest`（可选）                   | 与 vite/esbuild 生态一致，本项目可后续增量补充             |
+| Lint     | `eslint` + `@typescript-eslint`    | 团队默认                                                   |
+| 私有源   | `.npmrc` 走 `xxxx`                 | 与 `fonts/` 项目一致，便于内部分发                         |
 
 ### Node 18 兼容性约束
 
-| 能力 | Node 18 状态 | 选择 |
-| --- | --- | --- |
-| ESM 顶层 await | ✅ | 直接用 |
-| `import.meta.url` | ✅ | 取 `__dirname` 用 `fileURLToPath(new URL('.', import.meta.url))` |
-| `import.meta.dirname` | ❌（20.11+） | **禁用** |
-| `import ... assert { type: 'json' }` | ⚠️ 实验 | 改用 `createRequire` + `require(json)` 或 `fs.readFile` |
-| `fetch` 全局 | ✅ 18.0+ | 可用 |
-| `node:test` | ⚠️ 18.x 部分 API | 测试改用 `vitest` |
-| `structuredClone` | ✅ | 可用 |
+| 能力                                 | Node 18 状态     | 选择                                                             |
+| ------------------------------------ | ---------------- | ---------------------------------------------------------------- |
+| ESM 顶层 await                       | ✅               | 直接用                                                           |
+| `import.meta.url`                    | ✅               | 取 `__dirname` 用 `fileURLToPath(new URL('.', import.meta.url))` |
+| `import.meta.dirname`                | ❌（20.11+）     | **禁用**                                                         |
+| `import ... assert { type: 'json' }` | ⚠️ 实验          | 改用 `createRequire` + `require(json)` 或 `fs.readFile`          |
+| `fetch` 全局                         | ✅ 18.0+         | 可用                                                             |
+| `node:test`                          | ⚠️ 18.x 部分 API | 测试改用 `vitest`                                                |
+| `structuredClone`                    | ✅               | 可用                                                             |
 
 ---
 
@@ -281,12 +277,12 @@ split-font-cli/
 
 ```typescript
 export interface SplitFontOptions {
-    font: string;               // TTF 路径
-    ranges: string | RangeMap;  // ranges 文件路径或已加载 map
-    outDir: string;             // 输出目录（最终落到 <outDir>/<name>/）
-    name?: string;              // 默认从 font 文件名推导
+    font: string; // TTF 路径
+    ranges: string | RangeMap; // ranges 文件路径或已加载 map
+    outDir: string; // 输出目录（最终落到 <outDir>/<name>/）
+    name?: string; // 默认从 font 文件名推导
     target?: "woff2" | "woff" | "ttf";
-    hash?: number;              // 0 表示禁用
+    hash?: number; // 0 表示禁用
     fontFeature?: boolean;
     subsetRemainChars?: boolean;
     reporter?: boolean;
@@ -308,13 +304,13 @@ export async function splitFont(opts: SplitFontOptions): Promise<SplitResult>;
 
 **职责**：定位、加载并校验配置文件。
 
-| 步骤 | 实现 |
-| --- | --- |
-| 文件查找 | `--config` 指定优先；否则依次找 `split-font.config.{ts,js,mjs,cjs,json}`；最后看 `package.json#split-font` |
-| TS 配置加载 | 使用 `jiti({ interopDefault: true, esmResolve: true })` 即时加载 `.ts`，避免要求用户额外装 `ts-node` |
-| JSON 加载 | `JSON.parse(readFileSync(...))` |
-| 校验 | 用纯手写 `assertConfig` 守卫（不引入 zod，保持依赖体量）：必填 `tasks: TaskConfig[]`、`task.name` 非空、`task.font/ranges` 文件存在 |
-| `defineConfig` 帮手 | 仅做类型推导透传，运行时直接返回原对象，零开销 |
+| 步骤                | 实现                                                                                                                                |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 文件查找            | `--config` 指定优先；否则依次找 `split-font.config.{ts,js,mjs,cjs,json}`；最后看 `package.json#split-font`                          |
+| TS 配置加载         | 使用 `jiti({ interopDefault: true, esmResolve: true })` 即时加载 `.ts`，避免要求用户额外装 `ts-node`                                |
+| JSON 加载           | `JSON.parse(readFileSync(...))`                                                                                                     |
+| 校验                | 用纯手写 `assertConfig` 守卫（不引入 zod，保持依赖体量）：必填 `tasks: TaskConfig[]`、`task.name` 非空、`task.font/ranges` 文件存在 |
+| `defineConfig` 帮手 | 仅做类型推导透传，运行时直接返回原对象，零开销                                                                                      |
 
 ### 5.4 `commands/*`
 
@@ -342,8 +338,8 @@ class Logger {
     success(msg: string): void;
     warn(msg: string): void;
     error(msg: string | Error): void;
-    debug(msg: string): void;   // 仅 verbose 输出
-    time(label: string): void;  // 包装 console.time
+    debug(msg: string): void; // 仅 verbose 输出
+    time(label: string): void; // 包装 console.time
     timeEnd(label: string): void;
 }
 ```
@@ -415,11 +411,11 @@ split-font.config.ts ──► jiti.import()
 
 ## 七、错误处理与退出码
 
-| 退出码 | 场景 |
-| --- | --- |
-| `0` | 全部成功 |
-| `1` | 业务错误（参数不合法、找不到文件、解析失败等） |
-| `2` | 系统错误（fs 失败、cn-font-split 内部抛错） |
+| 退出码 | 场景                                           |
+| ------ | ---------------------------------------------- |
+| `0`    | 全部成功                                       |
+| `1`    | 业务错误（参数不合法、找不到文件、解析失败等） |
+| `2`    | 系统错误（fs 失败、cn-font-split 内部抛错）    |
 
 所有自定义错误继承自 `CliError`，CLI 顶层捕获后：
 
@@ -486,7 +482,7 @@ pnpm link --global               # 在系统里挂 split-font 命令
 
 ```bash
 pnpm build
-pnpm publish --access public --registry=https://ops-nexus.hypergryph.net/repository/npm-hosted/
+pnpm publish --access public --registry=xxxx
 ```
 
 `package.json` 关键字段：
@@ -519,12 +515,12 @@ pnpm publish --access public --registry=https://ops-nexus.hypergryph.net/reposit
 
 ## 十、里程碑
 
-| 里程碑 | 范围 | 产出 |
-| --- | --- | --- |
+| 里程碑           | 范围                                              | 产出                                     |
+| ---------------- | ------------------------------------------------- | ---------------------------------------- |
 | **M0**（本提交） | 项目骨架 + range/split/run/init 4 个命令 + 库 API | 可本地运行，能完整跑通 `fonts/` 现有任务 |
-| **M1** | 自动化测试（vitest）+ CI（GitHub Actions） | 单元测试 + 集成测试覆盖 |
-| **M2** | 内置上传插件（可选 `cmd-publish-oss` 适配） | `split-font upload` 子命令 |
-| **M3** | 切片质量监控（Puppeteer 截图对比 + 子集命中分析） | `split-font verify` 子命令 |
+| **M1**           | 自动化测试（vitest）+ CI（GitHub Actions）        | 单元测试 + 集成测试覆盖                  |
+| **M2**           | 内置上传插件（可选 `cmd-publish-oss` 适配）       | `split-font upload` 子命令               |
+| **M3**           | 切片质量监控（Puppeteer 截图对比 + 子集命中分析） | `split-font verify` 子命令               |
 
 ---
 
