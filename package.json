@@ -1,0 +1,58 @@
+{
+    "name": "split-font-cli",
+    "version": "0.1.0",
+    "description": "A TypeScript CLI for slicing CJK variable fonts into woff2 subsets, powered by cn-font-split.",
+    "type": "module",
+    "bin": {
+        "split-font": "./dist/cli.js"
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "ARCHITECTURE.md"
+    ],
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "scripts": {
+        "build": "tsup",
+        "dev": "tsup --watch",
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint \"src/**/*.ts\"",
+        "start": "node ./dist/cli.js",
+        "prepublishOnly": "pnpm build"
+    },
+    "keywords": [
+        "font",
+        "cjk",
+        "variable-font",
+        "woff2",
+        "subset",
+        "cli",
+        "cn-font-split"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "cn-font-split": "^7.2.9",
+        "commander": "^12.1.0",
+        "jiti": "^2.4.0",
+        "picocolors": "^1.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^18.19.39",
+        "tsup": "^8.0.2",
+        "typescript": "^5.4.5"
+    },
+    "packageManager": "pnpm@8.15.4"
+}

@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.tmp
+*.log
+.DS_Store
+
+# Local test outputs
+output
+tmp
+upload
+upload-cn
+upload-jp
