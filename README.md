@@ -74,7 +74,7 @@ import { defineConfig } from "split-font-cli";
 export default defineConfig({
     outDir: "./output",
     cdn: {
-        prefix: "https://web.hycdn.cn/fonts/",
+        prefix: "xxxx",
     },
     tasks: [
         {
@@ -93,31 +93,27 @@ export default defineConfig({
 
 ### 任务字段一览
 
-| 字段 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| `name` | `string` | 由 `font` 文件名推导 | 输出文件名与 `font-family` |
-| `font` | `string` | **必填** | 源 TTF/OTF 路径 |
-| `ranges` | `string \| RangeMap` | **必填** | ranges JSON 路径或已加载的 map |
-| `target` | `"woff2"` \| `"woff"` \| `"ttf"` | `"woff2"` | 产物格式 |
-| `hash` | `number` | `6` | 内容哈希长度，0 关闭 |
-| `fontFeature` | `boolean` | `false` | 保留 OpenType features |
-| `subsetRemainChars` | `boolean` | `false` | 为未覆盖字符生成兜底子集 |
-| `reporter` | `boolean` | `false` | 产出体积报表 |
-| `testHtml` | `boolean` | `false` | 产出测试 HTML |
-| `languageAreas` | `boolean` | `false` | 启用语言区自动切分 |
-| `autoSubset` | `boolean` | `false` | 启用自动子集化 |
-| `reduceMins` | `boolean` | `false` | 启用字形压缩 |
+| 字段                | 类型                             | 默认值               | 说明                           |
+| ------------------- | -------------------------------- | -------------------- | ------------------------------ |
+| `name`              | `string`                         | 由 `font` 文件名推导 | 输出文件名与 `font-family`     |
+| `font`              | `string`                         | **必填**             | 源 TTF/OTF 路径                |
+| `ranges`            | `string \| RangeMap`             | **必填**             | ranges JSON 路径或已加载的 map |
+| `target`            | `"woff2"` \| `"woff"` \| `"ttf"` | `"woff2"`            | 产物格式                       |
+| `hash`              | `number`                         | `6`                  | 内容哈希长度，0 关闭           |
+| `fontFeature`       | `boolean`                        | `false`              | 保留 OpenType features         |
+| `subsetRemainChars` | `boolean`                        | `false`              | 为未覆盖字符生成兜底子集       |
+| `reporter`          | `boolean`                        | `false`              | 产出体积报表                   |
+| `testHtml`          | `boolean`                        | `false`              | 产出测试 HTML                  |
+| `languageAreas`     | `boolean`                        | `false`              | 启用语言区自动切分             |
+| `autoSubset`        | `boolean`                        | `false`              | 启用自动子集化                 |
+| `reduceMins`        | `boolean`                        | `false`              | 启用字形压缩                   |
 
 > 默认值与社区项目 `fonts/` 完全对齐，可平滑迁移。
 
 ## 库式 API
 
 ```typescript
-import {
-    splitFont,
-    parseUnicodeRangeFile,
-    defineConfig,
-} from "split-font-cli";
+import { splitFont, parseUnicodeRangeFile, defineConfig } from "split-font-cli";
 
 const ranges = await parseUnicodeRangeFile("./assets/google-cn.css");
 
@@ -127,18 +123,18 @@ await splitFont(
         font: "./assets/MyFont-VF.ttf",
         ranges,
     },
-    "./output"
+    "./output",
 );
 ```
 
 ## 命令一览
 
-| 命令 | 用途 |
-| --- | --- |
-| `split-font init [--ts \| --js \| --json]` | 生成示例配置文件 |
-| `split-font range -i <css> -o <json>` | 解析 Google Fonts CSS 生成切片规则 |
-| `split-font split -f <ttf> -r <json> -n <name>` | 单次切片，命令行临时调试 |
-| `split-font run [-c <config>]` | 读取配置文件批量执行（推荐） |
+| 命令                                            | 用途                               |
+| ----------------------------------------------- | ---------------------------------- |
+| `split-font init [--ts \| --js \| --json]`      | 生成示例配置文件                   |
+| `split-font range -i <css> -o <json>`           | 解析 Google Fonts CSS 生成切片规则 |
+| `split-font split -f <ttf> -r <json> -n <name>` | 单次切片，命令行临时调试           |
+| `split-font run [-c <config>]`                  | 读取配置文件批量执行（推荐）       |
 
 全局开关：
 
@@ -151,12 +147,12 @@ await splitFont(
 
 ## 与 `fonts/` 项目的对照
 
-| `fonts/` | `split-font-cli` |
-| --- | --- |
-| 修改 `src/split.mjs` 顶部 `lang/fontName` 常量 | 编辑 `split-font.config.ts` 的 `tasks[]` |
+| `fonts/`                                               | `split-font-cli`                          |
+| ------------------------------------------------------ | ----------------------------------------- |
+| 修改 `src/split.mjs` 顶部 `lang/fontName` 常量         | 编辑 `split-font.config.ts` 的 `tasks[]`  |
 | `pnpm range` + 手动 `mv tmp/ranges-*.json src/assets/` | `split-font range -i ... -o ...` 一步到位 |
-| `pnpm split`（每次切一种字体） | `split-font run`（一次切完所有） |
-| 编辑源码切换语言 | 在配置文件里增删任务 |
+| `pnpm split`（每次切一种字体）                         | `split-font run`（一次切完所有）          |
+| 编辑源码切换语言                                       | 在配置文件里增删任务                      |
 
 ## Node.js 兼容
 
