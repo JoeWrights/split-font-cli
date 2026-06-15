@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   cn-font-split:
-    specifier: ^7.2.9
-    version: 7.4.1
+    specifier: ^7.4.3
+    version: 7.4.3
   commander:
     specifier: ^12.1.0
     version: 12.1.0
@@ -586,8 +586,8 @@ packages:
       readdirp: 4.1.2
     dev: true
 
-  /cn-font-split@7.4.1:
-    resolution: {integrity: sha512-T3tGE+Vo+T5RP1O8gfWdXKylI2DDPVUAbSUx2B9Tj3+cxl662keWmB3I4zlSgJvy53ADYknnADJDcHPwdiuitA==}
+  /cn-font-split@7.4.3:
+    resolution: {integrity: sha512-qAOyG1P20aWQJlFfKqdPIQeKL2y1sHbaoy76gaEVgtBTN4Z00IDHVpzGU9bNqdXu7nZSDdyWV65llsvKah2RSg==}
     hasBin: true
     requiresBuild: true
     dependencies:
@@ -595,7 +595,7 @@ packages:
       commander: 12.1.0
       fs-extra: 11.3.5
       google-protobuf: 3.21.4
-      koffi: 2.16.2
+      koffi: 2.10.0
       proto-to-cli: 1.2.1
       set-value: 4.1.0
     dev: false
@@ -753,8 +753,8 @@ packages:
       graceful-fs: 4.2.11
     dev: false
 
-  /koffi@2.16.2:
-    resolution: {integrity: sha512-owU0MRwv6xkrVqCd+33uw6BaYppkTRXbO/rVdJNI2dvZG0gzyRhYwW25eWtc5pauwK8TGh3AbkFONSezdykfSA==}
+  /koffi@2.10.0:
+    resolution: {integrity: sha512-TkCU8t2KE/ZcWGh87nRvqMPg0p2t+MXCz/6zAmQohf2UKyVPjGnx0suY88EeQbrP9aIMDVqgUu2j9phy/srqng==}
     requiresBuild: true
     dev: false
 
