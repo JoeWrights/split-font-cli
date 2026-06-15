@@ -44,7 +44,7 @@ split-font range \
     --output ./assets/ranges-cn.json
 ```
 
-> Google Fonts CSS 可以通过 `https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap` 获取并保存到本地。
+> Google Fonts CSS 可以通过 `https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap`、`https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap` 获取并保存到本地。
 
 ### 3. 一次性切完所有字体
 
